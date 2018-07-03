@@ -1,25 +1,24 @@
-from ConfigWrapper import ConfigDecorator
+from DctArgWrapper import DctArgWrapper
 from util import ArgType
 
 
-def conf_arg(_fct=None, *, arg_type=ArgType.BOTH, name='conf', path=None, forwardable=False):
+def conf_arg(_fct=None, *, arg_type=ArgType.BOTH, name='conf', path="", fetch_args=None):
     """
+    :param fetch_args:
     :param _fct:
     :param arg_type:
     :param name:
-    :param forwardable:
     :param path:
     :return:
     """
 
     def wrap(fct):
-        wrapper = fct if type(fct) == ConfigDecorator else ConfigDecorator(fct)
+        wrapper = fct if type(fct) == DctArgWrapper else DctArgWrapper(fct)
         wrapper.add_config({
             'arg_type': arg_type,
             'name': name,
             'path': path,
-            'forwardable': forwardable,
-
+            'fetch_args': fetch_args or {}
         })
         return wrapper
 

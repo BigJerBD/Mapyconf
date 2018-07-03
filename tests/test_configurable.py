@@ -49,11 +49,12 @@ class TestConfigurable(unittest.TestCase):
 
         assert_call({'child': {'subchild': {'e1': 1, 'e0': 0}}})
         assert_call({'child': {'subchild': {'e1': 1}}}, e0=0)
+        assert_call(e0=0, e1=1)
 
-    def test_foward_conf_with_name(self):
-        @conf_arg(forwardable=True, name='configuration')
-        def assert_call(configuration, e0):
-            self.assertEqual({'e0': 0}, configuration)
+    def tests_fetch_conf(self):
+        @conf_arg(fetch_args={'config': ""}, name='configuration')
+        def assert_call(config, e0):
+            self.assertEqual({'e0': 0}, config)
             self.assertEqual(0, e0)
 
         assert_call(configuration={'e0': 0})
@@ -68,7 +69,6 @@ class TestConfigurable(unittest.TestCase):
         assert_call(conf_1={'e_1': 1}, conf_0={'e_0': 0})
         assert_call(conf_1={'e_1': 1}, e_0=0)
         assert_call(e_1=1, e_0=0)
-
 
 
 if __name__ == '__main__':

@@ -1,10 +1,10 @@
 import inspect
 import itertools
 
-from util import extract_params, verify_config, get_from_path
+from util import get_dct, verify_config, get_from_paths,move_to_path
 
 
-class ConfigDecorator:
+class DctArgWrapper:
     """
     Decorator that allow to handle config dictionary more easily.
     Represented as a method with attributes
@@ -29,7 +29,7 @@ class ConfigDecorator:
         res_args, res_kwargs = [], {}
 
         for config in self.configs.values():
-            cur_args, cur_kwargs = self.get_bindings(config, list(args), kwargs)
+            cur_args, cur_kwargs = self._get_bindings(config, list(args), kwargs)
             res_args += cur_args
             res_kwargs = {**cur_kwargs, **res_kwargs}
 
@@ -38,39 +38,37 @@ class ConfigDecorator:
 
         return self.fct(*bind.args, **bind.kwargs)
 
-    def get_bindings(self, config, args, kwargs):
+    def _get_bindings(self, config, args, kwargs):
         """
         Fetch the appropriate binding based  a specific config args
-
-        todo:: the forward give the whole config, should it give only the small on
-        todo:: name_translation
 
         :param config:
         :param args:
         :param kwargs:
         :return: call args, call kwargs
         """
-        conf_params = extract_params(config['name'], config['arg_type'], args, kwargs)
-        if config['forwardable']:
-            kwargs[config['name']] = conf_params
+        dct_param = get_dct(config['name'], config['arg_type'], args, kwargs)
+        if dct_param and type(dct_param) == dict:
+            dct_param = move_to_path(dct_param, config['path'])
+            valid_kwargs = self.rmv_other_param_dct(kwargs, config['name'])
 
-        if config['path'] and conf_params:
-            conf_params = get_from_path(conf_params, config['path'])
+            valid_kwargs = {**valid_kwargs, **get_from_paths(dct_param, config['fetch_args'])}
 
-        if conf_params:
-            valid_kwargs = self.filter_kwargs(kwargs, config['name'])
-            return self.make_call_params(args, valid_kwargs, conf_params)
+            return self._make_call_params(args, valid_kwargs, dct_param)
 
         else:
             return args, kwargs
 
-    def make_call_params(self, args, kwargs, conf_arg):
+    def rmv_other_param_dct(self, kwargs, cur_config):
+        return {k: v for k, v in kwargs.items() if k == cur_config or k not in self.configs}
+
+    def _make_call_params(self, args, kwargs, conf_arg):
         args, call_args = args[:len(self.fct_pos)], args[len(self.fct_pos):]
         conf_kwargs = {k: v for k, v in conf_arg.items() if k in itertools.chain(self.fct_kw, self.fct_pos)}
 
-        return call_args, self.make_call_kwargs(args, kwargs, conf_kwargs)
+        return call_args, self._make_call_kwargs(args, kwargs, conf_kwargs)
 
-    def make_call_kwargs(self, args, kwargs, conf_kwargs):
+    def _make_call_kwargs(self, args, kwargs, conf_kwargs):
         # Map possible positionl args
         mapped_args = {}
 
@@ -82,5 +80,4 @@ class ConfigDecorator:
 
         return {**conf_kwargs, **mapped_args, **kwargs}
 
-    def filter_kwargs(self, kwargs, cur_config):
-        return {k: v for k, v in kwargs.items() if k == cur_config or k not in self.configs}
+
