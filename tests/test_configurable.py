@@ -52,7 +52,7 @@ class TestConfigurable(unittest.TestCase):
         assert_call(e0=0, e1=1)
 
     def tests_fetch_conf(self):
-        @conf_arg(fetch_args={'config': ""}, name='configuration')
+        @conf_arg(fetch_args={'config':""}, name='configuration')
         def assert_call(config, e0):
             self.assertEqual({'e0': 0}, config)
             self.assertEqual(0, e0)
