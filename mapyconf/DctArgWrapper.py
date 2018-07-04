@@ -6,8 +6,7 @@ from util import get_dct, verify_config, get_from_paths,move_to_path
 
 class DctArgWrapper:
     """
-    Decorator that allow to handle config dictionary more easily.
-    Represented as a method with attributes
+    Class wrapper that allow to add dct_args
     """
 
     def __init__(self, fct):
@@ -40,7 +39,7 @@ class DctArgWrapper:
 
     def _get_bindings(self, config, args, kwargs):
         """
-        Fetch the appropriate binding based  a specific config args
+        Fetch the appropriate binding based  a specific config of dct_args
 
         :param config:
         :param args:
@@ -49,7 +48,10 @@ class DctArgWrapper:
         """
         dct_param = get_dct(config['name'], config['arg_type'], args, kwargs)
         if dct_param and type(dct_param) == dict:
+
             dct_param = move_to_path(dct_param, config['path'])
+
+            # not removing other config would cause bind error
             valid_kwargs = self.rmv_other_param_dct(kwargs, config['name'])
 
             valid_kwargs = {**valid_kwargs, **get_from_paths(dct_param, config['fetch_args'])}
@@ -69,9 +71,9 @@ class DctArgWrapper:
         return call_args, self._make_call_kwargs(args, kwargs, conf_kwargs)
 
     def _make_call_kwargs(self, args, kwargs, conf_kwargs):
-        # Map possible positionl args
         mapped_args = {}
 
+        # positional args can be binded by their name, we do so
         for i, arg in enumerate(args):
             mapped_args[self.fct_pos[i]] = arg
 

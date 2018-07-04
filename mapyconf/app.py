@@ -2,8 +2,10 @@ from DctArgWrapper import DctArgWrapper
 from util import ArgType
 
 
-def conf_arg(_fct=None, *, arg_type=ArgType.BOTH, name='conf', path="", fetch_args=None):
+def dct_arg(_fct=None, *, arg_type=ArgType.BOTH, name='dct_arg', path="", fetch_args=None):
     """
+    Decorator used to set up a conf argument
+
     :param fetch_args:
     :param _fct:
     :param arg_type:
