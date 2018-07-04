@@ -30,7 +30,7 @@ def move_to_path(dct, path):
             dct = dct[subpth]
         return dct
     except KeyError:
-        raise TypeError(f'{path}: path not found in dictionary')
+        raise TypeError('%s: path not found in dictionary' % path)
 
 
 def verify_config(arg_type, name, path=None, **rest):

@@ -1,6 +1,6 @@
 import unittest
 
-from mapyconf.app import dct_arg
+from app import dct_arg
 
 
 class TestConfigurable(unittest.TestCase):

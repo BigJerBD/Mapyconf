@@ -1,14 +1,13 @@
-
 from distutils.core import setup
 
-setup(name='mapyconf',
-      version='0.1',
-      description='Utilitaries to pass configurationss to class and method',
-      author='Jérémie Bigras-Dunberry',
-      author_email='Bigjerbd@gmail.com',
-      url='https://github.com/BigJerBD/Mapyconf',
-      packages=[
-          'distutils',
-          'distutils.command'
-      ], requires=[]
-      )
+setup(
+    name='pydarg',
+    version='0.1',
+    description='Pure Python decorator for more complex dictionary handling',
+    author='Jeremie Bigras-Dunberry',
+    author_email='Bigjerbd@gmail.com',
+    url='https://github.com/BigJerBD/pydarg',
+    license='MIT License',
+    platforms=['POSIX', 'Windows', 'Unix', 'MacOS'],
+    keywords=['python', 'dictionary', 'decorator', 'configuration', 'utils'],
+)

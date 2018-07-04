@@ -1,4 +1,4 @@
-from DctArgWrapper import DctArgWrapper
+from dctargwrapper import DctArgWrapper
 from util import ArgType
 
 
