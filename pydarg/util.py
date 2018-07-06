@@ -1,19 +1,10 @@
-import enum
-
-
-class ArgType(enum.Enum):
-    POSITIONAL = 0
-    KEY_WORD = 1
-    BOTH = 2
-
-
-def get_dct(name, arg_type, args, kwargs):
+def get_dct(name, is_positional, is_keyword, args, kwargs):
     try:
-        if arg_type == ArgType.BOTH:
+        if is_positional and is_keyword:
             return kwargs.pop(name, None) or args.pop(0)
-        if arg_type == ArgType.KEY_WORD:
+        if is_keyword:
             return kwargs.pop(name)
-        if arg_type == ArgType.POSITIONAL:
+        if is_positional:
             return args.pop(0)
     except IndexError or KeyError:
         return None
@@ -31,12 +22,3 @@ def move_to_path(dct, path):
         return dct
     except KeyError:
         raise TypeError('%s: path not found in dictionary' % path)
-
-
-def verify_config(arg_type, name, path=None, **rest):
-    if arg_type and type(arg_type) != ArgType:
-        raise TypeError(arg_type)
-    if name and type(name) != str:
-        raise TypeError(name)
-    if path and type(path) != str:
-        raise TypeError(path)

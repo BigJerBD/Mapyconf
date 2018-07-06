@@ -1,7 +1,7 @@
 import inspect
 import itertools
 
-from util import get_dct, verify_config, get_from_paths,move_to_path
+from util import get_dct, get_from_paths, move_to_path
 
 
 class DctArgWrapper:
@@ -20,7 +20,6 @@ class DctArgWrapper:
         self.configs = {}
 
     def add_config(self, config):
-        verify_config(**config)
         self.configs[config['name']] = config
 
     def __call__(self, *args, **kwargs):
@@ -46,7 +45,7 @@ class DctArgWrapper:
         :param kwargs:
         :return: call args, call kwargs
         """
-        dct_param = get_dct(config['name'], config['arg_type'], args, kwargs)
+        dct_param = get_dct(config['name'], config['is_positional'], config['is_keyword'], args, kwargs)
         if dct_param and type(dct_param) == dict:
 
             dct_param = move_to_path(dct_param, config['path'])
@@ -81,5 +80,3 @@ class DctArgWrapper:
             raise TypeError("got multiple values for argument '%s'" % invalid_kwarg)
 
         return {**conf_kwargs, **mapped_args, **kwargs}
-
-

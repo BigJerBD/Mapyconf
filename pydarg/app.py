@@ -1,23 +1,24 @@
 from dctargwrapper import DctArgWrapper
-from util import ArgType
 
 
-def dct_arg(_fct=None, *, arg_type=ArgType.BOTH, name='dct_arg', path="", fetch_args=None):
+def dct_arg(_fct=None, *, is_positional=True, is_keyword=True, name='dct_arg', path="", fetch_args=None):
     """
     Decorator used to set up a conf argument
 
-    :param fetch_args:
+    :param is_keyword:
+    :param is_positional:
     :param _fct:
-    :param arg_type:
     :param name:
     :param path:
+    :param fetch_args:
     :return:
     """
 
     def wrap(fct):
         wrapper = fct if type(fct) == DctArgWrapper else DctArgWrapper(fct)
         wrapper.add_config({
-            'arg_type': arg_type,
+            'is_keyword': is_keyword,
+            'is_positional': is_positional,
             'name': name,
             'path': path,
             'fetch_args': fetch_args or {}
