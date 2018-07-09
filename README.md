@@ -13,7 +13,7 @@ Require python 3.6+
 INSTALLATION
 ============
 
-Run this package to fetch the package on Pypi
+Run this command line to fetch the package on Pypi
 
 ``` shell
 $ pip install pydarg
@@ -26,7 +26,7 @@ This package provide a method "dct_arg" used as a decorator
 
 ### Basic Usage
 
-without any parameter, dct_arg unpack the dictionary
+without any parameter, dct_arg unpacks the dictionary
 argument of function signature
 
 ``` python
@@ -51,7 +51,7 @@ example({'foo':'foo_1'},bar='bar)
 example({},'foo','bar')
 ```
 
-It is also possible to override dct_arg by using keyword argument.
+It is also possible to override dct_arg's name by using keyword argument.
 making this line printing "foo_2" and "bar_2"
 
 ``` python
@@ -61,7 +61,6 @@ example({'foo':'foo_1','bar:'bar_1},'foo_2,bar='bar_2)
 
 ### parameters
 
-the function signature is :
 ```python
 dct_arg(
     _fct=None, *,
@@ -111,8 +110,8 @@ example(config={'child': {'subchild': {'e1': 1, 'e0': 0}}})
 example({'child': {'subchild': {'e1': 1}}}, e0=0)
 ```
 
-since by default is a key_word and a positional argument both
-method call work
+since by default a dct_arg is a positional keyword
+both function call works
 
 **fetch the dct_arg itself as an argument**
 
@@ -123,5 +122,3 @@ def example(config, e0):
 
 example(configuration={'e0': 0})
 ```
-
-
