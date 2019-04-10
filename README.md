@@ -1,11 +1,11 @@
-pydarg
+PYDARG
 ======
 
 Pydarg is a python simple utility package providing a way to handle
-more deeply dictionary parameters of implemented function
+more deeply dictionary parameters of implemented functions
 
 
-REQUIREMENT
+REQUIREMENTS
 ===========
 
 Require python 3.6+
