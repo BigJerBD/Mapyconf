@@ -1,5 +1,8 @@
 PYDARG
 ======
+Toy Project attemting to simplify config management in python
+(in the end this was a stupid idea) 
+
 
 Pydarg is a python simple utility package providing a way to handle
 more deeply dictionary parameters of implemented functions
